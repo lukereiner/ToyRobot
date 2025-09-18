@@ -5,7 +5,7 @@ const {
   colCheck,
   faceCheck,
   moveCommand,
-  degreesCheck
+  degreesCheck,
 } = require("./functions");
 
 const myTestPrompt = "PLACE*";
@@ -27,7 +27,7 @@ const playGame = () => {
   const allowedFaces = ["NORTH", "EAST", "SOUTH", "WEST"];
   let degrees;
   const allowedDegrees = { 0: "NORTH", 90: "EAST", 180: "SOUTH", 270: "WEST" };
-  let tally = 0;
+  let endGame = false;
 
   // STARTING COMMAND TO PLACE ROBOT
   [x, y, face, degrees] = startingPrompt(
@@ -41,11 +41,7 @@ const playGame = () => {
     allowedFaces
   );
 
-  //   console.log(
-  //     `toyRobot.js Row: ${x}, Col: ${y}, Face: ${face}, Degrees: ${degrees}`
-  //   );
-
-  while (tally < 1) {
+  while (!endGame) {
     let userPrompt = prompt(
       "Enter your command (PLACE, MOVE, LEFT, RIGHT, REPORT): "
     ).toUpperCase();
@@ -61,20 +57,22 @@ const playGame = () => {
       face = parts[2].trim().toUpperCase();
       face = faceCheck(face, allowedFaces);
 
-      degrees = Object.keys(allowedDegrees).find(key => allowedDegrees[key] === face);
+      degrees = Object.keys(allowedDegrees).find(
+        (key) => allowedDegrees[key] === face
+      );
       console.log(`x: ${x}, y: ${y}, face: ${face}, degrees: ${degrees}`);
     } else if (userPrompt === "MOVE") {
-      [ x, y ] = moveCommand(x, y, face);
-      console.log(`Row: ${x}, Col: ${y}, face: ${face}, degrees: ${degrees}`);
-    } else if (userPrompt === 'LEFT' || userPrompt === 'RIGHT') {
-        [ face, degrees ] = degreesCheck(userPrompt, face, degrees, allowedDegrees);
-        console.log(`Row: ${x}, Col: ${y}, face: ${face}, degrees: ${degrees}`);
+      [x, y] = moveCommand(x, y, face);
+      //console.log(`Row: ${x}, Col: ${y}, face: ${face}, degrees: ${degrees}`);
+    } else if (userPrompt === "LEFT" || userPrompt === "RIGHT") {
+      [face, degrees] = degreesCheck(userPrompt, degrees, allowedDegrees);
+      //console.log(`Row: ${x}, Col: ${y}, face: ${face}, degrees: ${degrees}`);
+    } else if (userPrompt === "REPORT") {
+      console.log(`${x},${y},${face}`);
+    } else if (userPrompt === 'END') {
+        endGame = true;
     }
-
-    tally += 1;
   }
 };
-
-
 
 playGame();

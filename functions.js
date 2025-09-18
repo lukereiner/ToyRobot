@@ -31,11 +31,11 @@ function startingPrompt(
     face = prompt(
       "Incorrect direction. Input NORTH, SOUTH, EAST, OR WEST: "
     ).toUpperCase();
-    degrees = allowedDegrees[face];
+    degrees = Object.keys(allowedDegrees).find(key => allowedDegrees[key] === face);
   }
 
   // LOG STARTING COORDINATES
-  console.log(`Row: ${x}, Col: ${y}, Face: ${face}, Degrees: ${degrees}`);
+  //console.log(`Row: ${x}, Col: ${y}, Face: ${face}, Degrees: ${degrees}`);
   return [x, y, face, degrees, allowedDegrees, allowedFaces];
 }
 
@@ -107,25 +107,20 @@ function moveCommand(x, y, face) {
   return [newX, newY];
 }
 
-function degreesCheck(prompt, face, degrees, allowedDegrees) {
-    let newFace = face;
+function degreesCheck(prompt, degrees, allowedDegrees) {
+let newDegrees = degrees;
+
+// Use of Modular Arithmetic: Keeps degrees within valid bounds (0, 90, 180, 270) by using the modular operation.
 
     if (prompt === 'LEFT') {
-        if (face === 'NORTH') {
-            degrees = 270;
-        } else {
-            degrees -= 90;
-        }
+        newDegrees = (degrees - 90 + 360) % 360;
     } else if (prompt === 'RIGHT') {
-        if (face === 'WEST') {
-            degrees = 0;
-        } else {
-            degrees += 90;
-        }
+        newDegrees = (degrees + 90) % 360;
     }
-    newFace = allowedDegrees[degrees]
-    console.log(typeof newFace)
-    return [newFace, parseInt(degrees)];
+
+    const newFace = allowedDegrees[newDegrees];
+    return [newFace, newDegrees];
 }
+
 
 module.exports = { startingPrompt, rowCheck, colCheck, faceCheck, moveCommand, degreesCheck };
