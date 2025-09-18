@@ -1,5 +1,6 @@
 const prompt = require("prompt-sync")();
 const {
+  startingPrompt,
   rowCheck,
   colCheck,
   faceCheck,
@@ -12,6 +13,11 @@ const myTestPrompt = "PLACE*";
 let regexPattern = myTestPrompt.replace(/\*/g, ".*");
 let regex = new RegExp(regexPattern, "i");
 
+let test1 = "PLACE";
+let test2 = "PLACE x,y,f";
+
+// console.log(regex.test(test2));
+
 const playGame = () => {
   let x;
   const allowedRows = [0, 1, 2, 3, 4, 5];
@@ -23,6 +29,18 @@ const playGame = () => {
   const allowedDegrees = { 0: "NORTH", 90: "EAST", 180: "SOUTH", 270: "WEST" };
   let endGame = false;
   let openingPrompt = false;
+
+  // STARTING COMMAND TO PLACE ROBOT
+/*   [x, y, face, degrees] = startingPrompt(
+    x,
+    y,
+    face,
+    degrees,
+    allowedRows,
+    allowedCols,
+    allowedDegrees,
+    allowedFaces
+  ); */
 
   while (!endGame) {
     let userPrompt = prompt(
@@ -50,10 +68,13 @@ const playGame = () => {
       degrees = Object.keys(allowedDegrees).find(
         (key) => allowedDegrees[key] === face
       );
+      //console.log(`x: ${x}, y: ${y}, face: ${face}, degrees: ${degrees}`);
     } else if (userPrompt === "MOVE" && openingPrompt) {
       [x, y] = moveCommand(x, y, face);
+      //console.log(`Row: ${x}, Col: ${y}, face: ${face}, degrees: ${degrees}`);
     } else if (userPrompt === "LEFT" && openingPrompt || userPrompt === "RIGHT" && openingPrompt) {
       [face, degrees] = degreesCheck(userPrompt, degrees, allowedDegrees);
+      //console.log(`Row: ${x}, Col: ${y}, face: ${face}, degrees: ${degrees}`);
     } else if (userPrompt === "REPORT" && openingPrompt) {
       console.log(`${x},${y},${face}`);
     } else if (userPrompt === 'END') {

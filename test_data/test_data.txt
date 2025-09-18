@@ -1,9 +1,4 @@
-Here are some test scenarios that can be performed on the app.
-
-Each test scenario is a list of commands that should be inputted in sequence, and an expected result.
-
-Each scenario assumes that the app was just started, and that no commands were issued yet.
-
+My Tests
 ---------------------
 TEST 1: ignores commands before robot is put into place
 
@@ -94,7 +89,7 @@ showing that the robot walked 1 unit north, 1 unit east, 1 unit south and 1 unit
 
 TEST 7: robot won't fall off the table
 commands:
-PLACE 4,4,NORTH
+PLACE 5,5,NORTH
 MOVE
 MOVE
 MOVE
@@ -102,7 +97,7 @@ MOVE
 MOVE
 REPORT
 
-expected result: robot will be at '4,4,NORTH', ignoring commands to move further
+expected result: robot will be at '5,5,NORTH', ignoring commands to move further
 
 ---------------------
 
