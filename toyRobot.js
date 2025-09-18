@@ -5,6 +5,7 @@ const {
   colCheck,
   faceCheck,
   moveCommand,
+  degreesCheck
 } = require("./functions");
 
 const myTestPrompt = "PLACE*";
@@ -25,7 +26,7 @@ const playGame = () => {
   let face;
   const allowedFaces = ["NORTH", "EAST", "SOUTH", "WEST"];
   let degrees;
-  const allowedDegrees = { NORTH: 0, EAST: 90, SOUTH: 180, WEST: 270 };
+  const allowedDegrees = { 0: "NORTH", 90: "EAST", 180: "SOUTH", 270: "WEST" };
   let tally = 0;
 
   // STARTING COMMAND TO PLACE ROBOT
@@ -44,7 +45,7 @@ const playGame = () => {
   //     `toyRobot.js Row: ${x}, Col: ${y}, Face: ${face}, Degrees: ${degrees}`
   //   );
 
-  while (tally < 2) {
+  while (tally < 1) {
     let userPrompt = prompt(
       "Enter your command (PLACE, MOVE, LEFT, RIGHT, REPORT): "
     ).toUpperCase();
@@ -60,14 +61,14 @@ const playGame = () => {
       face = parts[2].trim().toUpperCase();
       face = faceCheck(face, allowedFaces);
 
-      degrees = allowedDegrees[face];
+      degrees = Object.keys(allowedDegrees).find(key => allowedDegrees[key] === face);
       console.log(`x: ${x}, y: ${y}, face: ${face}, degrees: ${degrees}`);
     } else if (userPrompt === "MOVE") {
-      const userMove = moveCommand(x, y, face);
-      //console.log(userMove);
-      x = userMove[0];
-      y = userMove[1];
-      console.log(x, y, face);
+      [ x, y ] = moveCommand(x, y, face);
+      console.log(`Row: ${x}, Col: ${y}, face: ${face}, degrees: ${degrees}`);
+    } else if (userPrompt === 'LEFT' || userPrompt === 'RIGHT') {
+        [ face, degrees ] = degreesCheck(userPrompt, face, degrees, allowedDegrees);
+        console.log(`Row: ${x}, Col: ${y}, face: ${face}, degrees: ${degrees}`);
     }
 
     tally += 1;

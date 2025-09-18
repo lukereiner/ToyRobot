@@ -1,21 +1,32 @@
 const prompt = require("prompt-sync")();
 
-function startingPrompt(x, y, face, degrees, allowedRows, allowedCols, allowedDegrees, allowedFaces) {
+function startingPrompt(
+  x,
+  y,
+  face,
+  degrees,
+  allowedRows,
+  allowedCols,
+  allowedDegrees,
+  allowedFaces
+) {
   console.log("Enter the coordinates to PLACE the robot... ");
   x = parseInt(prompt("Input starting row (0-5): "));
   while (!allowedRows.includes(x)) {
-    x = parseInt(prompt("Row (x) is outside the table. Enter a number (0-5): "));
+    x = parseInt(
+      prompt("Row (x) is outside the table. Enter a number (0-5): ")
+    );
   }
-  console.log(typeof x);
   y = parseInt(prompt("Input starting column (0-5): "));
   while (!allowedCols.includes(y)) {
-    y = parseInt(prompt("Column (y) is outside the table. Enter a number (0-5): "));
+    y = parseInt(
+      prompt("Column (y) is outside the table. Enter a number (0-5): ")
+    );
   }
-  console.log(typeof y)
   face = prompt(
     "Input the direction the robot faces (North, South, East, West): "
   ).toUpperCase();
-  degrees = allowedDegrees[face];
+  degrees = Object.keys(allowedDegrees).find(key => allowedDegrees[key] === face);
   while (!allowedFaces.includes(face)) {
     face = prompt(
       "Incorrect direction. Input NORTH, SOUTH, EAST, OR WEST: "
@@ -30,7 +41,9 @@ function startingPrompt(x, y, face, degrees, allowedRows, allowedCols, allowedDe
 
 function rowCheck(x, allowedRows) {
   while (!allowedRows.includes(x)) {
-    x = parseInt(prompt("Row (x) is outside the table. Enter a number (0-5): "));
+    x = parseInt(
+      prompt("Row (x) is outside the table. Enter a number (0-5): ")
+    );
   }
   console.log(`rowCheck complete! x is now ${x}`);
   return x;
@@ -38,7 +51,9 @@ function rowCheck(x, allowedRows) {
 
 function colCheck(y, allowedCols) {
   while (!allowedCols.includes(y)) {
-    y = parseInt(prompt("Column (y) is outside the table. Enter a number (0-5): "));
+    y = parseInt(
+      prompt("Column (y) is outside the table. Enter a number (0-5): ")
+    );
   }
   console.log(`colCheck complete! y is now ${y}`);
   return y;
@@ -46,7 +61,9 @@ function colCheck(y, allowedCols) {
 
 function faceCheck(face, allowedFaces) {
   while (!allowedFaces.includes(face)) {
-    face = prompt("Not a valid face. Enter NORTH, SOUTH, EAST, or WEST: ").trim().toUpperCase();
+    face = prompt("Not a valid face. Enter NORTH, SOUTH, EAST, or WEST: ")
+      .trim()
+      .toUpperCase();
   }
   console.log(`faceCheck complete! face is now ${face}`);
   return face;
@@ -58,22 +75,57 @@ function faceCheck(face, allowedFaces) {
 // SOUTH -> Y - 1
 // WEST -> X - 1
 function moveCommand(x, y, face) {
-    let newX = x;
-    let newY = y;
-  // Check current position with user prompt against table
-  if (face === 'NORTH') {
+  let newX = x;
+  let newY = y;
+
+  if (face === "NORTH") {
     if (y === 5) {
-        console.log(`You cannot move any higher ${face}`);
+      console.log(`You cannot move any further ${face}`);
     } else {
-        newY += 1;
-        //return [newX, newY]
+      newY += 1;
+    }
+  } else if (face === "EAST") {
+    if (x === 5) {
+      console.log(`You cannot move any futher ${face}`);
+    } else {
+      newX += 1;
+    }
+  } else if (face === "SOUTH") {
+    if (y === 0) {
+      console.log(`You cannot move any futher ${face}`);
+    } else {
+      newY -= 1;
+    }
+  } else if (face === "WEST") {
+    if (x === 0) {
+      console.log(`You cannot move any futher ${face}`);
+    } else {
+      newX -= 1;
     }
   }
-  return [ newX, newY];
 
-  /* while (!allowedRows.includes(currentX)) {
-    x = prompt("Outside the table. Cannot move, change your direction. ");
-  } */
-};
+  return [newX, newY];
+}
 
-module.exports = { startingPrompt, rowCheck, colCheck, faceCheck, moveCommand };
+function degreesCheck(prompt, face, degrees, allowedDegrees) {
+    let newFace = face;
+
+    if (prompt === 'LEFT') {
+        if (face === 'NORTH') {
+            degrees = 270;
+        } else {
+            degrees -= 90;
+        }
+    } else if (prompt === 'RIGHT') {
+        if (face === 'WEST') {
+            degrees = 0;
+        } else {
+            degrees += 90;
+        }
+    }
+    newFace = allowedDegrees[degrees]
+    console.log(typeof newFace)
+    return [newFace, parseInt(degrees)];
+}
+
+module.exports = { startingPrompt, rowCheck, colCheck, faceCheck, moveCommand, degreesCheck };
