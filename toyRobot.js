@@ -1,9 +1,20 @@
 const prompt = require("prompt-sync")();
-const { startingPrompt } = require("./functions");
+const {
+  startingPrompt,
+  rowCheck,
+  colCheck,
+  faceCheck,
+} = require("./functions");
 
-/* let userPrompt = prompt(
-  "Enter your command (PLACE, MOVE, LEFT, RIGHT, REPORT): "
-).toUpperCase(); */
+const myTestPrompt = "PLACE*";
+
+let regexPattern = myTestPrompt.replace(/\*/g, ".*");
+let regex = new RegExp(regexPattern, "i");
+
+let test1 = "PLACE";
+let test2 = "PLACE x,y,f";
+
+console.log(regex.test(test2));
 
 const playGame = () => {
   let x = 0;
@@ -17,8 +28,6 @@ const playGame = () => {
   let tally = 0;
 
   // STARTING COMMAND TO PLACE ROBOT
-
-  // STARTING COMMAND TO PLACE ROBOT
   [x, y, face, degrees] = startingPrompt(
     x,
     y,
@@ -28,42 +37,32 @@ const playGame = () => {
     allowedFaces
   );
 
-  console.log(
-    `toyRobot.js Row: ${x}, Col: ${y}, Face: ${face}, Degrees: ${degrees}`
-  );
+  //   console.log(
+  //     `toyRobot.js Row: ${x}, Col: ${y}, Face: ${face}, Degrees: ${degrees}`
+  //   );
 
-  while (tally < 2) {
+  while (tally < 1) {
     let userPrompt = prompt(
       "Enter your command (PLACE, MOVE, LEFT, RIGHT, REPORT): "
     ).toUpperCase();
 
-    switch (userPrompt) {
-      case "PLACE":
-        x = prompt("Input starting row (0-5): ");
-        while (x < 0 || x > 5) {
-          x = prompt("Outside the table. Input starting row (0-5): ");
-        }
-        y = prompt("Input starting column (0-5): ");
-        while (y < 0 || y > 5) {
-          y = prompt("Outside the table. Input starting column (0-5): ");
-        }
-        console.log(`Row: ${x}, Col: ${y}`);
-        break;
-      case "MOVE":
-        console.log("Move");
-        break;
-      case "LEFT":
-        console.log("Left");
-        break;
-      case "RIGHT":
-        console.log("Right");
-        break;
-      case "REPORT":
-        console.log("Report");
-        break;
-      default:
-        console.log("Incorrect command...");
+    if (regex.test(userPrompt)) {
+      let parts = userPrompt.slice(6).split(",");
+      x = parts[0].trim();
+      x = rowCheck(x, allowedRows);
+
+      y = parts[1].trim();
+      y = colCheck(y, allowedCols);
+
+      face = parts[2].trim().toUpperCase();
+      face = faceCheck(face, allowedFaces);
+
+      degrees = allowedDegrees[face];
+      console.log(`x: ${x}, y: ${y}, face: ${face}, degrees: ${degrees}`);
+    } else if (userPrompt === "MOVE") {
+      console.log("User input MOVE");
     }
+
     tally += 1;
   }
 };

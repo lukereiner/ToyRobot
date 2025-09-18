@@ -161,3 +161,4 @@ cython_debug/
 
 game.js
 node_modules/
+test.js
