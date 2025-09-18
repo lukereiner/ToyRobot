@@ -1,14 +1,14 @@
 const prompt = require("prompt-sync")();
 
-function startingPrompt(x, y, face, degrees, allowedDegrees, allowedFaces) {
+function startingPrompt(x, y, face, degrees, allowedRows, allowedCols, allowedDegrees, allowedFaces) {
   console.log("Enter the coordinates to PLACE the robot... ");
   x = prompt("Input starting row (0-5): ");
-  while (x < 0 || x > 5) {
-    x = prompt("Outside the table. Input starting row (0-5): ");
+  while (!allowedRows.includes(x)) {
+    x = prompt("Row (x) is outside the table. Enter a number (0-5): ");
   }
   y = prompt("Input starting column (0-5): ");
-  while (y < 0 || y > 5) {
-    y = prompt("Outside the table. Input starting column (0-5): ");
+  while (!allowedCols.includes(y)) {
+    y = prompt("Column (y) is outside the table. Enter a number (0-5): ");
   }
   face = prompt(
     "Input the direction the robot faces (North, South, East, West): "

@@ -33,6 +33,8 @@ const playGame = () => {
     y,
     face,
     degrees,
+    allowedRows,
+    allowedCols,
     allowedDegrees,
     allowedFaces
   );
