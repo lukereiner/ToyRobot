@@ -2,14 +2,16 @@ const prompt = require("prompt-sync")();
 
 function startingPrompt(x, y, face, degrees, allowedRows, allowedCols, allowedDegrees, allowedFaces) {
   console.log("Enter the coordinates to PLACE the robot... ");
-  x = prompt("Input starting row (0-5): ");
+  x = parseInt(prompt("Input starting row (0-5): "));
   while (!allowedRows.includes(x)) {
-    x = prompt("Row (x) is outside the table. Enter a number (0-5): ");
+    x = parseInt(prompt("Row (x) is outside the table. Enter a number (0-5): "));
   }
-  y = prompt("Input starting column (0-5): ");
+  console.log(typeof x);
+  y = parseInt(prompt("Input starting column (0-5): "));
   while (!allowedCols.includes(y)) {
-    y = prompt("Column (y) is outside the table. Enter a number (0-5): ");
+    y = parseInt(prompt("Column (y) is outside the table. Enter a number (0-5): "));
   }
+  console.log(typeof y)
   face = prompt(
     "Input the direction the robot faces (North, South, East, West): "
   ).toUpperCase();
@@ -28,7 +30,7 @@ function startingPrompt(x, y, face, degrees, allowedRows, allowedCols, allowedDe
 
 function rowCheck(x, allowedRows) {
   while (!allowedRows.includes(x)) {
-    x = prompt("Row (x) is outside the table. Enter a number (0-5): ");
+    x = parseInt(prompt("Row (x) is outside the table. Enter a number (0-5): "));
   }
   console.log(`rowCheck complete! x is now ${x}`);
   return x;
@@ -36,7 +38,7 @@ function rowCheck(x, allowedRows) {
 
 function colCheck(y, allowedCols) {
   while (!allowedCols.includes(y)) {
-    y = prompt("Column (y) is outside the table. Enter a number (0-5): ");
+    y = parseInt(prompt("Column (y) is outside the table. Enter a number (0-5): "));
   }
   console.log(`colCheck complete! y is now ${y}`);
   return y;
@@ -50,4 +52,28 @@ function faceCheck(face, allowedFaces) {
   return face;
 }
 
-module.exports = { startingPrompt, rowCheck, colCheck, faceCheck };
+// Moves robot one (1) unit forward in the direction it is currently facing
+// NORTH -> Y + 1
+// EAST -> X + 1
+// SOUTH -> Y - 1
+// WEST -> X - 1
+function moveCommand(x, y, face) {
+    let newX = x;
+    let newY = y;
+  // Check current position with user prompt against table
+  if (face === 'NORTH') {
+    if (y === 5) {
+        console.log(`You cannot move any higher ${face}`);
+    } else {
+        newY += 1;
+        //return [newX, newY]
+    }
+  }
+  return [ newX, newY];
+
+  /* while (!allowedRows.includes(currentX)) {
+    x = prompt("Outside the table. Cannot move, change your direction. ");
+  } */
+};
+
+module.exports = { startingPrompt, rowCheck, colCheck, faceCheck, moveCommand };
