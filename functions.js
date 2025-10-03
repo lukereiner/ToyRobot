@@ -40,19 +40,19 @@ function moveCommand(x, y, face) {
     }
   } else if (face === "EAST") {
     if (x === 5) {
-      console.log(`You cannot move any futher ${face}`);
+      console.log(`You cannot move any further ${face}`);
     } else {
       newX += 1;
     }
   } else if (face === "SOUTH") {
     if (y === 0) {
-      console.log(`You cannot move any futher ${face}`);
+      console.log(`You cannot move any further ${face}`);
     } else {
       newY -= 1;
     }
   } else if (face === "WEST") {
     if (x === 0) {
-      console.log(`You cannot move any futher ${face}`);
+      console.log(`You cannot move any further ${face}`);
     } else {
       newX -= 1;
     }
